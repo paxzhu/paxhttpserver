@@ -1,14 +1,11 @@
-
-
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Flask Template Example</title>
-    </head>
+<head>       
+<title>Directory listing for /</title>
+</head>
     <body>
-          <p>My string: {{dirs}}</p>
-          <p>Loop through the list:</p>
-          <ul>
+        <h1>Directory listing for /</h1>
+        <ul>
             {% for file in dirs %}
             <li>
                 <a href = {{ file }}>
@@ -16,6 +13,6 @@
                 </a>
             </li>
             {% endfor %}
-          </ul>
+        </ul>
     </body>
 </html>
