@@ -1,0 +1,21 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flask Template Example</title>
+    </head>
+    <body>
+          <p>My string: {{dirs}}</p>
+          <p>Loop through the list:</p>
+          <ul>
+            {% for file in dirs %}
+            <li>
+                <a href = {{ file }}>
+                {{ file }}
+                </a>
+            </li>
+            {% endfor %}
+          </ul>
+    </body>
+</html>
