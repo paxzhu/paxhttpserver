@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>       
-<title>Directory listing for /</title>
+<title>WedDirectory</title>
 </head>
     <body>
-        <h1>Directory listing for /</h1>
+        <h1>Directory listing for {{ cur_dir }}</h1>
         <ul>
-            {% for file in dirs %}
+            {% for sub in subs %}
             <li>
-                <a href = {{ file }}>
-                {{ file }}
+                <a href = {{ sub }}>
+                {{ sub }}
                 </a>
             </li>
             {% endfor %}
