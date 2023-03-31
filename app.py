@@ -3,9 +3,24 @@ import os
 
 app = Flask(__name__)
 
+def handle_dir(path: str) -> str:
+    stack = []
+    path = path.split('/')
+    print(path)
+    for sub in path:
+        if sub == '..':
+            if stack:
+                stack.pop()
+        elif sub != '.' and sub != '':
+            stack.append(sub)
+    return '/'.join(stack)
+
 @app.route('/', defaults = {'path':'./'})
 @app.route('/<path:path>')
 def direct(path):
+    # path = handle_dir(path)
+    path = os.path.realpath(path)
+    print(path)
     if path.endswith('/'):
         if not os.path.isdir(path):
             return render_template('404.html'), 404
