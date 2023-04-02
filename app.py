@@ -15,13 +15,17 @@ def handle_path(path: str) -> str:
                 stack.pop()
         elif sub != '.' and sub != '':
             stack.append(sub)
-    preview = '/'.join(stack)
-    print(f'preview:{preview}')
-    return preview
+    
+    path = '/'.join(stack)
+    if os.path.isdir(path):
+        path += '/'
+    # print(path)
+    return path
 
 @app.route('/', defaults = {'path':'./'})
 @app.route('/<path:path>')
 def direct(path):
+    path = handle_path(path)
     if path.endswith('/'):
         if not os.path.isdir(path):
             return render_template('404.html'), 404
