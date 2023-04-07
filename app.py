@@ -32,17 +32,27 @@ def preprocess(url_path):
     """
     if simplified != url_path:
         return redirect(simplified)
-    if os.path.isdir(url_path) and not simplified.endswith('/'):
+    if os.path.isdir(url_path) and not url_path.endswith('/'):
         return redirect(url_path+'/')
     if url_path and not path_exists(url_path):
         return render_template('404.html'), 404
 
-
+"""exception: type in templates/test will redirect to templates/templates/test"""
 def handle_directory(url_path):
-    return 'Here will display current directory'
+    temp = url_path
+    if not url_path:
+        temp = '.'
+    subs = [sub.name+'/' if sub.is_dir() else sub.name for sub in os.scandir(temp)]
+    if 'index.html' in subs:
+        with open(os.path.join(url_path, 'index.html')) as page:
+            contents = page.read()
+        return contents
+    return render_template('directfor.html', cur_dir = '/' + url_path, subs = subs)
 
 def handle_file(url_path):
-    return 'Here will display file content'
+    with open(url_path) as page:
+        contents = page.read()
+    return contents
 
 @app.route('/', defaults = {'url_path':''})
 @app.route('/<path:url_path>')
@@ -55,7 +65,8 @@ def direct(url_path):
         return handle
 
     """Now, url_path is the normal path"""
-    if url_path.endswith('/'):
+    
+    if not url_path or url_path.endswith('/'):
         return handle_directory(url_path)
     return handle_file(url_path)
 
