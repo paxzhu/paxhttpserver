@@ -29,20 +29,27 @@ def preprocess(url_path):
     Non-standard redirects to simplified ones
     not found return 404page
     the rest is normal
+    =======Note========
+    For redirect(location)
+        pass an absolute url as the location para
+        or a relative url as the location para like: redirect(url_path.split('/')[-1] + '/', code = 301)
     """
+    # print(simplified)
     if simplified != url_path:
-        return redirect(simplified)
+        return redirect(simplified, code = 301)
     if os.path.isdir(url_path) and not url_path.endswith('/'):
-        return redirect(url_path+'/')
+        # print(url_path+'/')
+        return redirect('/'+ url_path + '/', code = 301) 
     if url_path and not path_exists(url_path):
         return render_template('404.html'), 404
 
-"""exception: type in templates/test will redirect to templates/templates/test"""
 def handle_directory(url_path):
     temp = url_path
     if not url_path:
         temp = '.'
     subs = [sub.name+'/' if sub.is_dir() else sub.name for sub in os.scandir(temp)]
+    subs.append('../')
+    subs.sort()
     if 'index.html' in subs:
         with open(os.path.join(url_path, 'index.html')) as page:
             contents = page.read()
@@ -57,6 +64,7 @@ def handle_file(url_path):
 @app.route('/', defaults = {'url_path':''})
 @app.route('/<path:url_path>')
 def direct(url_path):
+    print(url_path)
     """
     There may be a problem with user input, which will cause an exception, so preprocessing is required
     """
